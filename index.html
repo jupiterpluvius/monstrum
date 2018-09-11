@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>Adunaton</title>
+
+	<style>
+		body {
+			background-color: #f8d9fc; /* #B0BEB1; */
+			margin: 50px;
+		}
+		p {  }
+		textarea {
+			font-size: 30px;
+			margin: auto;
+			padding: 15px;
+			border: 1px solid black;
+			width: 480px;
+			color: #777;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
+		}
+		.prettyColors {
+			width: 90%;
+			margin: auto;
+			font:40px "Mote";
+		}
+		#input {
+			margin:auto;
+			width:50vw;
+		}
+		#text {
+			color: #c0a6b2; /* #01797A; */
+			margin:auto;
+			margin-bottom:200px;
+			line-height: 58px;
+			font-feature-settings: "ss05" 1, "ss06" 1;
+		}
+		.invisible {
+			display: none;
+		}
+		.highlit {
+			color: #a21010; /* #D16E45; */
+			font-weight: bold;
+			font-feature-settings: /*"smcp" 1,*/  "ss05" 1;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<div id="input">
+		<textarea id="textField" type="text" placeholder="Paste text here"></textarea>
+		<button onclick="prepText()">Start reading</button>
+	</div>
+
+	<p id="instructions" class="invisible" style="color:#a7978b;margin-left:50px">Right arrow to show the next word, left arrow to go backwards.</p>
+	<p id="text"></p>
+
+
+
+
+
+
+<script>
+// V.1
+// desideranda for VV. 2+:
+// - highlight most recently added word
+// - up/down to move highlight but not text displayed
+// - input from CTS, file
+
+
+document.getElementById("textField").value = ""; // start with an empty textbox
+var inputText, pointer, pointerHighlight; // promise them so they can be used in universal scope
+
+function prepText() {
+	inputText = document.getElementById("textField").value; // put the pasted text into a variable
+			// little subroutine to kill the input forms
+			let death = document.getElementById("input");
+			death.parentNode.removeChild(death); // call the parent to kill the child
+			document.getElementById("text").className = "prettyColors"; // make the textbox visible
+			document.getElementById("instructions").classList.toggle("invisible");
+	inputText = inputText.replace(/\n/g, "<br> "); // replace with HTML line-breaks
+	inputText = inputText.replace(/(<br> ){1,}<br>/g, "<br> "); // chop multiple line breaks into one
+	inputText = inputText.replace(/\s{2,}/g, " &nbsp;&nbsp;&nbsp;&nbsp;"); // guess at creating quasi-tabs/indentation
+	inputText = inputText.trim(); // trim whitespace on either side
+	inputText = inputText.split(" "); // split at spaces
+
+	pElement = document.getElementById("text"); // store the id for the <p>
+	pointer = 0; // start from no words showing
+}
+
+// Need to figure out how this works... switch, case... (breaks necessary?)
+document.onkeydown = function(e) {
+	switch (e.keyCode) {
+		case 37: // leftarrow
+		if (pointer >= 2) { // but stop when you've shown all the words
+			pointer = pointer - 1; // and decrement the pointer
+			moove();
+		};
+		break;
+
+		case 38: // uparrow
+		// if (pointer >= 2) { // but stop when you've shown all the words
+		// 	let pointerHighlight = pointer - 1; // and decrement the pointer
+		// 	mooveHighlight();
+		// };
+		break;
+
+		case 39: //rightarrow
+		if (pointer < inputText.length) { // but stop when you've shown all the words // leave it <= to allow one final click to make it all black?
+			pointer++; //increment the pointer
+			moove();
+		};
+		break;
+
+		case 40: // downarrow
+		break;
+	}
+}
+
+function moove() {
+	let textline = inputText.slice(0, pointer - 1); // = as many words as clicks
+	currentWorm = inputText.slice(pointer - 1, pointer).toString(); // gives me the current (i.e. most recently displayed) worm
+	textline = textline.join(" "); // .join joins as a string with the parameter as the joiner
+	pElement.innerHTML = textline + " <span class=\"highlit\";>" + currentWorm + "</span>"; // put the info inside the <p>
+}
+
+// function mooveHighlight() {
+//	let stringPart1 = ??;
+// 	let textline = inputText.slice(0, pointer - 1); // = as many words as clicks // use currentWorm?
+// 	textline = textline.join(" "); // .join joins as a string with the parameter as the joiner
+// 	pElement.innerHTML = textline + " <span style=\"color:red; font-weight:bold;\">" + currentWorm + "</span>"; // put the info inside the <p>
+// }
+
+</script>
+
+
+
+</body>
+</html>
+
