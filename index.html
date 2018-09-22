@@ -45,6 +45,15 @@
 			font-weight: bold;
 			font-feature-settings: /*"smcp" 1,*/  "ss05" 1;
 		}
+		#buttons {
+			bottom:20px;
+			right: 20px;
+			position: fixed
+		}
+		.buttons {
+			padding: 25px;
+			font-size: 1.5rem;
+		}
 	</style>
 
 </head>
@@ -59,8 +68,10 @@
 	<p id="instructions" class="invisible" style="color:#a7978b;margin-left:50px">Right arrow to show the next word, left arrow to go backwards.</p>
 	<p id="text"></p>
 
-
-
+	<div id="buttons">
+		<button class="buttons" onclick="moveLeft()">-</button>&nbsp;
+		<button class="buttons" onclick="moveRight()">+</button>
+	</div>
 
 
 
@@ -92,34 +103,17 @@ function prepText() {
 	pointer = 0; // start from no words showing
 }
 
-// Need to figure out how this works... switch, case... (breaks necessary?)
-document.onkeydown = function(e) {
-	switch (e.keyCode) {
-		case 37: // leftarrow
-		if (pointer >= 2) { // but stop when you've shown all the words
-			pointer = pointer - 1; // and decrement the pointer
-			moove();
-		};
-		break;
+function moveLeft() {
+	if (pointer >= 2) { // but stop when you've shown all the words
+		pointer = pointer - 1; // and decrement the pointer
+		moove();
+	}};
 
-		case 38: // uparrow
-		// if (pointer >= 2) { // but stop when you've shown all the words
-		// 	let pointerHighlight = pointer - 1; // and decrement the pointer
-		// 	mooveHighlight();
-		// };
-		break;
-
-		case 39: //rightarrow
-		if (pointer < inputText.length) { // but stop when you've shown all the words // leave it <= to allow one final click to make it all black?
-			pointer++; //increment the pointer
-			moove();
-		};
-		break;
-
-		case 40: // downarrow
-		break;
-	}
-}
+function moveRight() {
+	if (pointer < inputText.length) { // but stop when you've shown all the words // leave it <= to allow one final click to make it all black?
+		pointer++; //increment the pointer
+		moove();
+	}};
 
 function moove() {
 	let textline = inputText.slice(0, pointer - 1); // = as many words as clicks
