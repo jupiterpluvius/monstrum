@@ -9,7 +9,7 @@
 
 	<style>
 		body {
-			background-color: #f8d9fc; /* #B0BEB1; */
+			background-color: #2d3c47; /* #B0BEB1; */
 			margin: 50px;
 		}
 		textarea {
@@ -31,17 +31,17 @@
 			width:50vw;
 		}
 		#text {
-			color: #c0a6b2; /* #01797A; */
+			color: #d1c6b7; /* #01797A; */
 			margin:auto;
 			margin-bottom:200px;
-			line-height: 58px;
+			line-height: 55px;
 			font-feature-settings: "ss05" 1, "ss06" 1;
 		}
 		.invisible {
 			display: none;
 		}
 		.highlit {
-			color: #a21010; /* #D16E45; */
+			color: #a6f55c; /* #D16E45; */
 			font-weight: bold;
 			font-feature-settings: /*"smcp" 1,*/  "ss05" 1;
 		}
@@ -51,8 +51,12 @@
 			position: fixed
 		}
 		.buttons {
-			padding: 25px;
+			padding: 15px 20px;
 			font-size: 1.5rem;
+			color:#2d3c47;
+			border-radius: 50%;
+			background-color: #9bd487;
+			border:8px solid #a6f55c;
 		}
 	</style>
 
@@ -65,12 +69,11 @@
 		<button onclick="prepText()">Start reading</button>
 	</div>
 
-	<p id="instructions" class="invisible" style="color:#a7978b;margin-left:50px">Right arrow to show the next word, left arrow to go backwards.</p>
 	<p id="text"></p>
 
 	<div id="buttons">
-		<button class="buttons" onclick="moveLeft()">-</button>&nbsp;
-		<button class="buttons" onclick="moveRight()">+</button>
+		<button class="buttons" style="font-size:1rem" onclick="moveLeft()">◁</button>
+		<button class="buttons" onclick="moveRight()">▶︎</button>
 	</div>
 
 
@@ -92,7 +95,6 @@ function prepText() {
 			let death = document.getElementById("input");
 			death.parentNode.removeChild(death); // call the parent to kill the child
 			document.getElementById("text").className = "prettyColors"; // make the textbox visible
-			document.getElementById("instructions").classList.toggle("invisible");
 	inputText = inputText.replace(/\n/g, "<br> "); // replace with HTML line-breaks
 	inputText = inputText.replace(/(<br> ){1,}<br>/g, "<br> "); // chop multiple line breaks into one
 	inputText = inputText.replace(/\s{2,}/g, " &nbsp;&nbsp;&nbsp;&nbsp;"); // guess at creating quasi-tabs/indentation
